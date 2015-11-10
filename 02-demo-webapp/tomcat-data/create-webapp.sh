@@ -1,0 +1,2 @@
+jar -cf hello.war .
+

@@ -1,0 +1,13 @@
+Sources
+-------
+
+* https://registry.hub.docker.com/u/tutum/tomcat/
+* https://registry.hub.docker.com/u/rossbachp/apache-tomcat8/
+
+Usecase
+-------
+
+Créer un container tomcat avec un container data attaché
+déployer en local une application WAR à base d'une JSP
+
+http://192.168.99.100:8080/hello/

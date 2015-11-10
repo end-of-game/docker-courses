@@ -1,0 +1,19 @@
+mysqldb:
+  image: mysql:latest
+  environment:
+    MYSQL_USER: mysql
+    MYSQL_PASSWORD: mysql
+    MYSQL_DATABASE: petclinic
+    MYSQL_ROOT_PASSWORD: supersecret
+
+mytomcat:
+  build: tomcat8
+  environment:
+   CATALINA_OPTS: "-Xmx1024m"
+  volumes:
+   - ./archives:/tomcat/webapps
+  links:
+    - mysqldb:webdb
+  ports:
+    - 8080:8080
+
