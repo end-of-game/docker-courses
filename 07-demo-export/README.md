@@ -10,9 +10,9 @@ docker run -it ubuntu bash
 
 docker ps -a
 
-docker export <containerId> > export.tar
+docker export containerId > export.tar
 
-docker rm -f <contanerId>
+docker rm -f contanerId
 
 docker import ./export.tar
 
