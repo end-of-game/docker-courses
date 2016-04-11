@@ -11,7 +11,9 @@ Purpose of this demo:
 
 ## Setup a Swarm Cluster using docker-machine
 
-In this step we will use this bash script: init-cluster-swarm.sh
+In this step we will use this bash script:
+
+**https://github.com/Treeptik/docker-courses/blob/master/09-demo-swarm-interlock-nginx/init-cluster-swarm.sh**
 
 This script does the following operations:
 
