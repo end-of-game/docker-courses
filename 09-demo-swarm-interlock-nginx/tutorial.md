@@ -60,4 +60,17 @@ We use an environment variable to configure Interlock to your Swarm cluster. Run
 $export SWARM_HOST=tcp://$(docker-machine ip manager):3376
 ```
 
+### Start Interlock
+
+Connect your shell to th Swarm Manager host:
+
+```{r, engine='bash', count_lines}
+$echo $(docker-machine ip manager)
+```
+
+Bring up our Interlock container:
+
+```{r, engine='bash', count_lines}
+$docker-compose up -d interlock
+```
 
