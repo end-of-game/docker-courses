@@ -9,6 +9,10 @@ Purpose of this demo:
 * Analyze and observe Nginx loadbalancing
 * Analyze and observe dynamic configuration of NGINX when new instances are added
 
+This demo was made from Evan Hazlett examples using its Interlock extension developed for Docker:
+
+**https://github.com/ehazlett/interlock**
+
 ## Setup a Swarm Cluster using docker-machine
 
 In this step we will use this bash script:
