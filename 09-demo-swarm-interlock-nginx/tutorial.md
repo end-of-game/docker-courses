@@ -46,3 +46,18 @@ agent2            -           virtualbox   Running   tcp://192.168.99.103:2376  
 consul-keystore   -           virtualbox   Running   tcp://192.168.99.100:2376                      v1.10.3   
 manager           * (swarm)   virtualbox   Running   tcp://192.168.99.101:2376   manager (master)   v1.10.3
 ```
+
+We can see the four virtual machines, one as the Consul keystore, one as the Swarm manager and two as the Swarm nodes.
+
+Download the Docker Compose file in your project directory:
+
+```{r, engine='bash', count_lines}
+$curl - O https://raw.githubusercontent.com/ehazlett/interlock/master/docs/examples/nginx-swarm-machine/docker-compose.yml
+```
+We use an environment variable to configure Interlock to your Swarm cluster. Run the following to set it up:
+
+```{r, engine='bash', count_lines}
+$export SWARM_HOST=tcp://$(docker-machine ip manager):3376
+```
+
+
