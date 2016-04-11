@@ -31,6 +31,18 @@ This script does the following operations:
 Simply run the bash script to build the complete Docker environment:
 
 ```{r, engine='bash', count_lines}
-chmod +x init-cluster-swarm.sh
-./init-cluster-swarm.sh
+$chmod +x init-cluster-swarm.sh
+$./init-cluster-swarm.sh
+```
+##Deploy NGINX and Tomcat containers with docker-compose
+
+Once the Swarm Cluster is up let's take a look at our setup:
+
+```{r, engine='bash', count_lines}
+$docker-machine ls
+NAME              ACTIVE      DRIVER       STATE     URL                         SWARM              DOCKER    ERRORS
+agent1            -           virtualbox   Running   tcp://192.168.99.102:2376   manager            v1.10.3   
+agent2            -           virtualbox   Running   tcp://192.168.99.103:2376   manager            v1.10.3   
+consul-keystore   -           virtualbox   Running   tcp://192.168.99.100:2376                      v1.10.3   
+manager           * (swarm)   virtualbox   Running   tcp://192.168.99.101:2376   manager (master)   v1.10.3
 ```
