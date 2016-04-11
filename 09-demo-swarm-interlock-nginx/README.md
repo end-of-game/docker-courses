@@ -6,8 +6,8 @@ Purpose of this demo:
 
 * Setup a Swarm Cluster using docker-machine
 * Deploy NGINX and Tomcat containers with docker-compose
-* Analyze and observe Nginx loadbalancing
 * Analyze and observe dynamic configuration of NGINX when new instances are added
+* Analyze and observe Nginx loadbalancing
 
 This demo was made from Evan Hazlett examples using its Interlock extension developed for Docker:
 
