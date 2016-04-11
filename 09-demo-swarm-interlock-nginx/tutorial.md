@@ -24,7 +24,7 @@ This script does the following operations:
 
 Simply run the bash script to build the complete Docker environment:
 
-```{r, engine='bash', count_lines}
+```bash
 chmod +x init-cluster-swarm.sh
 ./init-cluster-swarm.sh
 ```
