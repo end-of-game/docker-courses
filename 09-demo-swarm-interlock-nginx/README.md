@@ -76,13 +76,13 @@ $ docker-compose up -d interlock
 
 "docker ps" on the manager print all containers in the cluster:
 
-```{r, engine='bash', count_lines}
+```
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
 6e42cb04960b        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   3 minutes ago       Up 3 minutes        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
 ```
 "docker ps -a" on the manager print all containers in the cluster and also the swarm containers such as clients and manager. We can see in the NAMES column the  containers per node dividing.
 
-```{r, engine='bash', count_lines}
+```
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
 6e42cb04960b        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   3 minutes ago       Up 3 minutes        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
 beb0746aeb94        swarm:latest               "/swarm join --advert"   6 minutes ago       Up 6 minutes                                         agent2/swarm-agent
