@@ -119,7 +119,7 @@ $ docker-compose logs
 ```
 We can see the first app detection in the logs:
 
-```{r, engine='logs', count_lines}
+```
 app_1       | 2016/04/11 21:13:06 listening on :8080
 interlock_1 | DEBU[1368] updating load balancers                      
 interlock_1 | DEBU[1368] websocket endpoints: []                       ext=nginx
