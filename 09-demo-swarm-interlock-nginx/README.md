@@ -83,4 +83,14 @@ fb3ffb12b79c        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   6 second
 
 ### Start Nginx
 
-Bring up our 
+Bring up our Nginx container:
+
+```{r, engine='bash', count_lines}
+$docker-compose up -d nginx
+```
+
+"docker ps" print this now:
+
+```{r, engine='bash', count_lines}
+
+```
