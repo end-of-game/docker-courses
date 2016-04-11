@@ -6,7 +6,7 @@ https://github.com/ehazlett/interlock/tree/master/docs/examples/nginx-swarm-mach
 Usecase
 -------
 
-- créer un cluster Swarm avec docker-machine
-- déployer un frontal Nginx ainsi que n containers Tomcat
-- observer et analyser la répartition de charge par Nginx
-- oberver la configuration dynamique de NGINX lors de l'ajout de nouvelles instances
+- setup a Swarm Cluster using docker-machine
+- deploy an NGINX front and "n" Tomcat containers
+- analyze and observe Nginx loadbalancing
+- analyze and observe dynamic configuration of NGINX when new instances are added
