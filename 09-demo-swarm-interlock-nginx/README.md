@@ -74,13 +74,13 @@ Bring up our Interlock container:
 $ docker-compose up -d interlock
 ```
 
-"docker ps" on the manager print all containers in the cluster:
+```docker ps``` on the manager print all containers in the cluster:
 
 ```
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
 6e42cb04960b        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   3 minutes ago       Up 3 minutes        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
 ```
-"docker ps -a" on the manager print all containers in the cluster and also the swarm containers such as clients and manager. We can see in the NAMES column the  containers per node dividing.
+```docker ps -a``` on the manager print all containers in the cluster and also the swarm containers such as clients and manager. We can see in the NAMES column the  containers per node dividing.
 
 ```
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
@@ -99,8 +99,19 @@ Bring up our Nginx container:
 $ docker-compose up -d nginx
 ```
 
-"docker ps" print this now:
+### Start example App
+
+Run ```docker ps``` and ```docker-machine ls``` to find the Nginx node IP.
+
+Add an entry to your /etc/hosts in order to resolve the name "test.local" to the Nginx node IP, so we will access to the load-balanced app via web-browser.
+
+Open the compose logs in an other shell tab:
 
 ```{r, engine='bash', count_lines}
-
+$ export SWARM_HOST=tcp://$(docker-machine ip manager):3376
+$ eval $(docker-machine env --swarm manager)
+$ docker-compose logs
 ```
+
+Bring up the example app
+
