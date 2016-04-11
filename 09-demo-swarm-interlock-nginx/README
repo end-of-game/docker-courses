@@ -7,6 +7,6 @@ Usecase
 -------
 
 - setup a Swarm Cluster using docker-machine
-- deploy an NGINX front and "n" Tomcat containers
+- deploy NGINX and Tomcat containers with docker-compose
 - analyze and observe Nginx loadbalancing
 - analyze and observe dynamic configuration of NGINX when new instances are added
