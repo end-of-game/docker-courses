@@ -1,0 +1,11 @@
+Sources
+-------
+
+https://github.com/ehazlett/interlock/tree/master/docs/examples/nginx-swarm-machine
+
+Usecase
+-------
+
+- créer un cluster Swarm avec docker-machine et docker-compose
+- déployer un frontal Nginx ainsi que n containers Tomcat
+- observer et analyser la répartition de charge par Nginx et la configuration dynamique lors de l'ajout de nouvelles instances
