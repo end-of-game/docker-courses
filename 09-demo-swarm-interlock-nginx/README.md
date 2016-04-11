@@ -105,6 +105,11 @@ Run ```docker ps``` and ```docker-machine ls``` to find the Nginx node IP.
 
 Add an entry to your /etc/hosts in order to resolve the name "test.local" to the Nginx node IP, so we will access to the load-balanced app via web-browser.
 
+Bring up the first example app instance:
+
+```{r, engine='bash', count_lines}
+$ docker-compose up -d app
+```
 Open the compose logs in an other shell tab:
 
 ```{r, engine='bash', count_lines}
@@ -112,6 +117,15 @@ $ export SWARM_HOST=tcp://$(docker-machine ip manager):3376
 $ eval $(docker-machine env --swarm manager)
 $ docker-compose logs
 ```
+We can see the first app detection in the logs:
 
-Bring up the example app
-
+```{r, engine='bash', count_lines}
+app_1       | 2016/04/11 21:13:06 listening on :8080
+interlock_1 | DEBU[1368] updating load balancers                      
+interlock_1 | DEBU[1368] websocket endpoints: []                       ext=nginx
+interlock_1 | DEBU[1368] alias domains: []                             ext=nginx
+interlock_1 | INFO[1368] test.local: upstream=192.168.99.103:32768     ext=nginx
+interlock_1 | INFO[1368] configuration updated                         ext=nginx
+interlock_1 | INFO[1368] restarted proxy container: id=9203d9264890 name=/agent1/dockerswarminterlocknginx_nginx_1  ext=nginx
+interlock_1 | DEBU[1368] reload duration: 18.07ms                     
+```
