@@ -31,15 +31,15 @@ This script does the following operations:
 Simply run the bash script to build the complete Docker environment:
 
 ```{r, engine='bash', count_lines}
-$chmod +x init-cluster-swarm.sh
-$./init-cluster-swarm.sh
+$ chmod +x init-cluster-swarm.sh
+$ ./init-cluster-swarm.sh
 ```
 ##Deploy NGINX and Tomcat containers with docker-compose
 
 Once the Swarm Cluster is up let's take a look at our setup:
 
 ```{r, engine='bash', count_lines}
-$docker-machine ls
+$ docker-machine ls
 NAME              ACTIVE      DRIVER       STATE     URL                         SWARM              DOCKER    ERRORS
 agent1            -           virtualbox   Running   tcp://192.168.99.102:2376   manager            v1.10.3   
 agent2            -           virtualbox   Running   tcp://192.168.99.103:2376   manager            v1.10.3   
@@ -52,33 +52,43 @@ We can see the four virtual machines, one as the Consul keystore, one as the Swa
 Download the Docker Compose file in your project directory:
 
 ```{r, engine='bash', count_lines}
-$curl - O https://raw.githubusercontent.com/ehazlett/interlock/master/docs/examples/nginx-swarm-machine/docker-compose.yml
+$ curl - O https://raw.githubusercontent.com/ehazlett/interlock/master/docs/examples/nginx-swarm-machine/docker-compose.yml
 ```
 We use an environment variable to configure Interlock to your Swarm cluster. Run the following to set it up:
 
 ```{r, engine='bash', count_lines}
-$export SWARM_HOST=tcp://$(docker-machine ip manager):3376
+$ export SWARM_HOST=tcp://$(docker-machine ip manager):3376
 ```
 
 ### Start Interlock
 
-Connect your shell to the Swarm Manager host:
+Connect your client shell to the Swarm manager daemon:
 
 ```{r, engine='bash', count_lines}
-$echo $(docker-machine ip manager)
+$ eval $(docker-machine env --swarm manager)
 ```
 
 Bring up our Interlock container:
 
 ```{r, engine='bash', count_lines}
-$docker-compose up -d interlock
+$ docker-compose up -d interlock
 ```
 
-"docker ps" print this now:
+"docker ps" on the manager print all containers in the cluster:
 
 ```{r, engine='bash', count_lines}
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
-fb3ffb12b79c        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   6 seconds ago       Up 6 seconds        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
+6e42cb04960b        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   3 minutes ago       Up 3 minutes        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
+```
+"docker ps -a" on the manager print all containers in the cluster and also the swarm containers such as clients and manager. We can see in the NAMES column the  containers per node dividing.
+
+```{r, engine='bash', count_lines}
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                            NAMES
+6e42cb04960b        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   3 minutes ago       Up 3 minutes        192.168.99.102:32768->8080/tcp   agent1/dockerswarminterlocknginx_interlock_1
+beb0746aeb94        swarm:latest               "/swarm join --advert"   6 minutes ago       Up 6 minutes                                         agent2/swarm-agent
+e27396ff7c34        swarm:latest               "/swarm join --advert"   7 minutes ago       Up 7 minutes                                         agent1/swarm-agent
+e9c8a853a113        swarm:latest               "/swarm join --advert"   8 minutes ago       Up 8 minutes                                         manager/swarm-agent
+0cc6cedf5119        swarm:latest               "/swarm manage --tlsv"   8 minutes ago       Up 8 minutes                                         manager/swarm-agent-master
 ```
 
 ### Start Nginx
@@ -86,7 +96,7 @@ fb3ffb12b79c        ehazlett/interlock:1.0.1   "/bin/interlock -D ru"   6 second
 Bring up our Nginx container:
 
 ```{r, engine='bash', count_lines}
-$docker-compose up -d nginx
+$ docker-compose up -d nginx
 ```
 
 "docker ps" print this now:
