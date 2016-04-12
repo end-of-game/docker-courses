@@ -19,6 +19,22 @@ Purpose of this demo:
 - [x] Virtualbox 5.x or later
 - [x] Vagrant by HashiCorp
 
+### Build your Vagrant/Virtualbox environment
+
+Download the sandbox scripts. The Vagrantfile add a 2nd hard drive for creating btrfs partitions, the bootstrap.sh runs some system tasks for the first start.
+
+```bash
+$ mkdir sandbox_CentOS && cd sandbox_CentOS
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/Vagrantfile
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/bootstrap.sh
+```
+Run your Vagrant Centos sandbox:
+
+```bash
+$ vagrant up
+```
+Wait few minutes... take a coffee
+
 ### Create the BTRFS volumes
 
 ### Configure Docker to use BTRFS
