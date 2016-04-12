@@ -37,6 +37,96 @@ Wait few minutes... take a coffee
 
 ### Create the BTRFS volumes
 
+Connect to your freshly started Vagrant sandbox, and become root:
+
+```{r, engine='bash'}
+$ vagrant ssh
+$ sudo su
+```
+Use fdisk to see all the partitions and disk available:
+
+```{r, engine='bash'}
+$ fdisk -l
+```
+Output:
+
+```
+Disque /dev/sda : 42.9 Go, 42949672960 octets, 83886080 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 512 octets / 512 octets
+Type d'étiquette de disque : dos
+Identifiant de disque : 0x000c71f0
+
+Périphérique Amorçage  Début         Fin      Blocs    Id. Système
+/dev/sda1            2048        4095        1024   83  Linux
+/dev/sda2   *        4096      413695      204800   83  Linux
+/dev/sda3          413696    83886079    41736192   8e  Linux LVM
+
+Disque /dev/sdb : 21.5 Go, 21474836480 octets, 41943040 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 512 octets / 512 octets
+
+
+Disque /dev/mapper/VolGroup00-LogVol00 : 40.8 Go, 40768634880 octets, 79626240 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 512 octets / 512 octets
+
+
+Disque /dev/mapper/VolGroup00-LogVol01 : 1610 Mo, 1610612736 octets, 3145728 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 512 octets / 512 octets
+
+
+Disque /dev/mapper/docker-253:0-394543-pool : 107.4 Go, 107374182400 octets, 209715200 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 65536 octets / 65536 octets
+
+```
+We can see that:
+
+- /dev/sda is used for system and LVM partitioning
+- /dev/sdb is the second disk added in the Vagrantfile (the real size is 21.5Go)
+
+We will divide the /dev/sdb drive in two partitions, a dedicated partition for **/var/lib/docker** and a dedicated partition for the PostgreSQL volume **/data**
+
+```{r, engine='bash'}
+$ fdisk /dev/sdb
+
+# first partition setup
+n (new partition)
+p (primary)
+1 (number of this partition)
+[enter] (default first sector)
++10G (last sector)
+
+# second partition setup
+n (new partition)
+p (primary)
+2 (number of this partition)
+[enter] (default first sector)
+[enter] (default last sector)
+
+# let's print the partition table
+p (print the partition table)
+
+Disque /dev/sdb : 21.5 Go, 21474836480 octets, 41943040 secteurs
+Unités = secteur de 1 × 512 = 512 octets
+Taille de secteur (logique / physique) : 512 octets / 512 octets
+taille d'E/S (minimale / optimale) : 512 octets / 512 octets
+Type d'étiquette de disque : dos
+Identifiant de disque : 0xb6a76dca
+
+Périphérique Amorçage  Début         Fin      Blocs    Id. Système
+/dev/sdb1            2048    20973567    10485760   83  Linux
+/dev/sdb2        20973568    41943039    10484736   83  Linux
+```
+We will 
+
 ### Configure Docker to use BTRFS
 
 ### Deploy PostgreSQL container
