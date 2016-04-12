@@ -26,7 +26,7 @@ This script does the following operations:
 - Create a 3rd host Swarm node
 
 
-Simply run the bash script to build the complete Docker environment:
+Download, chmod and simply run the bash script to build the complete Docker environment:
 
 ```{r, engine='bash', count_lines}
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/09-demo-swarm-interlock-nginx/init-cluster-swarm.sh
