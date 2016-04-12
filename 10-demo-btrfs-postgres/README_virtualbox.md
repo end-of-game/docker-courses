@@ -1,4 +1,4 @@
-# Docker and PostgreSQL with BTRFS support demo - Vagrant / Virtualbox version
+# Docker and PostgreSQL with BTRFS support demo (Vagrant/Virtualbox version)
 
 ## Introduction
 
@@ -15,6 +15,9 @@ Purpose of this demo:
 ## Use case with a PostgreSQL container and a BTRFS data volume
 
 ### Prerequisites
+
+- [x] Virtualbox 5.x or later
+- [x] Vagrant by HashiCorp
 
 ### Create the BTRFS volumes
 
