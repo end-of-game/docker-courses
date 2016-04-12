@@ -15,9 +15,7 @@ This demo was made from Evan Hazlett examples using its Interlock extension deve
 
 ## Setup a Swarm Cluster using docker-machine
 
-In this step we will use this bash script:
-
-**https://github.com/Treeptik/docker-courses/blob/master/09-demo-swarm-interlock-nginx/init-cluster-swarm.sh**
+In this step we will use a bash script for setting up the Swarm cluster.
 
 This script does the following operations:
 
@@ -31,6 +29,7 @@ This script does the following operations:
 Simply run the bash script to build the complete Docker environment:
 
 ```{r, engine='bash', count_lines}
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/09-demo-swarm-interlock-nginx/init-cluster-swarm.sh
 $ chmod +x init-cluster-swarm.sh
 $ ./init-cluster-swarm.sh
 ```
