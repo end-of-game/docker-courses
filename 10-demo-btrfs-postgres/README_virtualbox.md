@@ -92,7 +92,7 @@ We can see that:
 - /dev/sda is used for system and LVM partitioning
 - /dev/sdb is the second disk added in the Vagrantfile (the real size is 21.5Go)
 
-We will divide the /dev/sdb drive in two partitions, a dedicated partition for **/var/lib/docker** and a dedicated partition for the PostgreSQL volume **/data**
+We will divide the /dev/sdb drive in two partitions, a dedicated partition for **/var/lib/docker** and a dedicated partition for the PostgreSQL volume **/bdd**
 
 ```{r, engine='bash'}
 $ fdisk /dev/sdb
@@ -129,10 +129,16 @@ Périphérique Amorçage  Début         Fin      Blocs    Id. Système
 ```
 We can see that we have created two partitions of 10Go each on the **/dev/sdb** drive
 
-Let's convert our new partitions to BTRFS filesystem:
+Let's convert our new partitions to BTRFS filesystem.
+
+Partition /dev/sdb1:
 
 ```{r, engine='bash'}
 $ mkfs.btrfs /dev/sdb1
+```
+Output:
+
+```
 btrfs-progs v3.19.1
 See http://btrfs.wiki.kernel.org for more information.
 
@@ -141,7 +147,26 @@ Turning ON incompat feature 'skinny-metadata': reduced-size metadata extent refs
 fs created label (null) on /dev/sdb1
 	nodesize 16384 leafsize 16384 sectorsize 4096 size 10.00GiB
 ```
+Partition /dev/sdb2:
 
+```{r, engine='bash'}
+$ mkfs.btrfs /dev/sdb2
+```
+Output:
+
+```
+btrfs-progs v3.19.1
+See http://btrfs.wiki.kernel.org for more information.
+
+Turning ON incompat feature 'extref': increased hardlink limit per file to 65536
+Turning ON incompat feature 'skinny-metadata': reduced-size metadata extent refs
+fs created label (null) on /dev/sdb2
+	nodesize 16384 leafsize 16384 sectorsize 4096 size 10.00GiB
+```
+Create two directories in order to mount the new partitions:
+
+$ mkdir /app
+$ mkdir /
 
 ### Configure Docker to use BTRFS
 
