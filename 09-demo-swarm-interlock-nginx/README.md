@@ -13,6 +13,8 @@ This demo was made from Evan Hazlett examples using its Interlock extension deve
 
 **https://github.com/ehazlett/interlock**
 
+Interlock is an event driven extension system for Docker. It uses the Docker Event stream to notify "extensions". Currently the supported extensions are HAProxy and Nginx. This provides a dynamic load balancer and reverse proxy utilizing either HAProxy or Nginx.
+
 ## Setup a Swarm Cluster using docker-machine
 
 In this step we will use a bash script for setting up the Swarm cluster.
@@ -165,4 +167,4 @@ interlock_1 | DEBU[1755] reload duration: 22.76ms
 ```
 In the web-browser, **http://test.local** display the blue Docker whale with **"served from IDXXXXXXX"** status displaying the ID of container who served the web page.
 
-Reloading the page will change this ID if the previous cluster setup goes well.
+Reloading the page will change this ID if the cluster setup goes well.
