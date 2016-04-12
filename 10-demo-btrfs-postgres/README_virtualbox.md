@@ -23,7 +23,7 @@ Purpose of this demo:
 
 Download the sandbox scripts. The Vagrantfile add a 2nd hard drive for creating btrfs partitions, the bootstrap.sh runs some system tasks for the first start.
 
-```bash
+```{r, engine='bash', count_lines}
 $ mkdir sandbox_CentOS && cd sandbox_CentOS
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/Vagrantfile
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/bootstrap.sh
