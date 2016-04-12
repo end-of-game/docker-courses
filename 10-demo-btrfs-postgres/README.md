@@ -14,7 +14,9 @@ TODO
 ## DOCKER CONTAINERS
 
 Create a new Postgre Container
-`docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
+```
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
 
 Connect to it
 ```
