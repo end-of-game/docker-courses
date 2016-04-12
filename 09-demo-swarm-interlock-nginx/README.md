@@ -59,6 +59,12 @@ We use an environment variable to configure Interlock to your Swarm cluster. Run
 $ export SWARM_HOST=tcp://$(docker-machine ip manager):3376
 ```
 
+As a reminder:
+
+- TCP port 2376 need to be open between the Swarm Manager and Swarm nodes
+- TCP port 3376 need to be open between the Docker Engine client and the Swarm Manager
+
+
 ### Start Interlock
 
 Connect your client shell to the Swarm manager daemon:
