@@ -96,7 +96,9 @@ We will divide the /dev/sdb drive in two partitions, a dedicated partition for *
 
 ```{r, engine='bash'}
 $ fdisk /dev/sdb
+```
 
+```
 # first partition setup
 n (new partition)
 p (primary)
