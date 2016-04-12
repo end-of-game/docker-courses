@@ -127,7 +127,21 @@ Périphérique Amorçage  Début         Fin      Blocs    Id. Système
 /dev/sdb1            2048    20973567    10485760   83  Linux
 /dev/sdb2        20973568    41943039    10484736   83  Linux
 ```
-We will 
+We can see that we have created two partitions of 10Go each on the **/dev/sdb** drive
+
+Let's convert our new partitions to BTRFS filesystem:
+
+```{r, engine='bash'}
+$ mkfs.btrfs /dev/sdb1
+btrfs-progs v3.19.1
+See http://btrfs.wiki.kernel.org for more information.
+
+Turning ON incompat feature 'extref': increased hardlink limit per file to 65536
+Turning ON incompat feature 'skinny-metadata': reduced-size metadata extent refs
+fs created label (null) on /dev/sdb1
+	nodesize 16384 leafsize 16384 sectorsize 4096 size 10.00GiB
+```
+
 
 ### Configure Docker to use BTRFS
 
