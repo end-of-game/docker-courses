@@ -9,7 +9,10 @@ Purpose of this demo:
 
 ## DOCKER MACHINE 
 
-TODO
+```
+docker-machine create machine10 --driver virtualbox
+eval $(docker-machine env machine10)
+```
 
 ## DOCKER CONTAINERS
 
