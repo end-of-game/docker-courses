@@ -5,7 +5,7 @@
 Purpose of this demo:
 
 * Setup a Swarm Cluster using docker-machine
-* Deploy NGINX and Tomcat containers with docker-compose
+* Deploy NGINX and App containers with docker-compose
 * Analyze and observe dynamic configuration of NGINX when new instances are added
 * Analyze and observe Nginx loadbalancing
 
@@ -33,7 +33,7 @@ $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/09-de
 $ chmod +x init-cluster-swarm.sh
 $ ./init-cluster-swarm.sh
 ```
-##Deploy NGINX and Tomcat containers with docker-compose
+##Deploy NGINX and App containers with docker-compose
 
 Once the Swarm Cluster is up let's take a look at our setup:
 
@@ -51,7 +51,7 @@ We can see the four virtual machines, one as the Consul keystore, one as the Swa
 Download the Docker Compose file in your project directory:
 
 ```{r, engine='bash', count_lines}
-$ curl - O https://raw.githubusercontent.com/ehazlett/interlock/master/docs/examples/nginx-swarm-machine/docker-compose.yml
+$ curl -O https://raw.githubusercontent.com/ehazlett/interlock/master/docs/examples/nginx-swarm-machine/docker-compose.yml
 ```
 We use an environment variable to configure Interlock to your Swarm cluster. Run the following to set it up:
 
@@ -128,3 +128,35 @@ interlock_1 | INFO[1368] configuration updated                         ext=nginx
 interlock_1 | INFO[1368] restarted proxy container: id=9203d9264890 name=/agent1/dockerswarminterlocknginx_nginx_1  ext=nginx
 interlock_1 | DEBU[1368] reload duration: 18.07ms                     
 ```
+
+### Scale the example app
+
+Try scaling to see Interlock add the new containers:
+
+```{r, engine='bash', count_lines}
+$ docker-compose scale app=4
+```
+We can see all the new app detection in the logs:
+
+```
+interlock_1 | DEBU[1755] updating load balancers                      
+interlock_1 | DEBU[1755] websocket endpoints: []                       ext=nginx
+interlock_1 | DEBU[1755] alias domains: []                             ext=nginx
+interlock_1 | INFO[1755] test.local: upstream=192.168.99.102:32769     ext=nginx
+interlock_1 | DEBU[1755] websocket endpoints: []                       ext=nginx
+interlock_1 | DEBU[1755] alias domains: []                             ext=nginx
+interlock_1 | INFO[1755] test.local: upstream=192.168.99.103:32769     ext=nginx
+interlock_1 | DEBU[1755] websocket endpoints: []                       ext=nginx
+interlock_1 | DEBU[1755] alias domains: []                             ext=nginx
+interlock_1 | INFO[1755] test.local: upstream=192.168.99.101:32768     ext=nginx
+interlock_1 | DEBU[1755] websocket endpoints: []                       ext=nginx
+interlock_1 | DEBU[1755] alias domains: []                             ext=nginx
+interlock_1 | INFO[1755] test.local: upstream=192.168.99.103:32768     ext=nginx
+interlock_1 | INFO[1755] configuration updated                         ext=nginx
+interlock_1 | DEBU[1755] event received: type=kill id=94ae061ff4127b36749424b8698275335d333d106781944b59392560cabf9c18 
+interlock_1 | INFO[1755] restarted proxy container: id=94ae061ff412 name=/agent1/dockerswarminterlocknginx_nginx_1  ext=nginx
+interlock_1 | DEBU[1755] reload duration: 22.76ms                     
+```
+In the web-browser, **http://test.local** display the blue Docker whale with **"served from IDXXXXXXX"** status displaying the ID of container who served the web page.
+
+Reloading the page will change this ID if the previous cluster setup goes well.
