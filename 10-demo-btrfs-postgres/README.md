@@ -1,20 +1,26 @@
-# Docker with BTRFS  support demo
+# Docker and PostgreSQL with BTRFS support demo - Vagrant / Virtualbox version
 
 ## Introduction
 
 Purpose of this demo:
 
-* Understand ans use BTRFS on Linux
+* Understand and use BTRFS on Linux
 * Learn integration with Docker
+* Use case with a PostgreSQL container and a BTRFS data volume
 
-## DOCKER MACHINE 
+## Understand and use BTRFS on Linux
 
-```
-docker-machine create machine10 --driver virtualbox
-eval $(docker-machine env machine10)
-```
+## Learn integration with Docker 
 
-## DOCKER CONTAINERS
+## Use case with a PostgreSQL container and a BTRFS data volume
+
+### Prerequisites
+
+### Create the BTRFS volumes
+
+### Configure Docker to use BTRFS
+
+### Deploy PostgreSQL container
 
 Create a new Postgre Container
 ```
@@ -37,8 +43,12 @@ docker exec -it some-postgres bash
 psql -U postgres
 ```
 
-## CREATE THE USERS
+### BDD Scalability tests
 
 `postgres=# \i /scripts/users.sql`
+
+#### Compare the running time of an SQL script
+
+#### Benchmark BTRFS snapshot system with this data
 
 
