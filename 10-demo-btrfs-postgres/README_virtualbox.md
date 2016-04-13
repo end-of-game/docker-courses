@@ -259,25 +259,37 @@ $ journalctl -f -u docker
 
 ### Deploy PostgreSQL container
 
-Create a new Postgre Container
-```
-docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-```
+In your /home/vagrant directory, download the SQL script for coming tests:
 
-Connect to it with the old school fashion ! 
+```{r, engine='bash'}
+$ cd /home/vagrant/
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/scripts/users.sql
 ```
-docker run -it  --link some-postgres:postgres --rm \
-                -v `pwd`/scripts:/scripts \
-                -v /data/bdd:/var/lib/postgresql/data \
-                postgres \
-                sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
-```
+Create a new PostgreSQL container and specify volumes to be mounted ans the Postgres password:
 
+```{r, engine='bash'}
+$ docker run 	--name postgres-srv \
+				-e POSTGRES_PASSWORD=mysecretpassword \
+				-v /bdd:/var/lib/postgresql/data \
+				-v `pwd`/users.sql:/scripts/users.sql \
+				-d postgres
+```
+Connect to it with the old school fashion way ! 
+
+```{r, engine='bash'}
+$ docker run	-it --rm \
+				--name postgres-cli \
+				--link postgres-srv:postgres \
+				-v `pwd`/users.sql:/scripts/users.sql \
+				postgres \
+				sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+```
 Else with the way for the new kids on the block 
 
-```
-docker exec -it some-postgres bash
-psql -U postgres
+``` {r, engine='bash'}
+$ docker exec -it postgres -srv bash
+puis
+$ psql -U postgres
 ```
 
 ### BDD Scalability tests
