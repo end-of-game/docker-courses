@@ -165,8 +165,44 @@ fs created label (null) on /dev/sdb2
 ```
 Create two directories in order to mount the new partitions:
 
+```{r, engine='bash'}
 $ mkdir /app
-$ mkdir /
+$ mkdir /mnt/docker_tmp
+$ mount /dev/sdb1 /app
+$ mount /dev/sdb2 /mnt/docker_tmp
+```
+We are going to migrate the data stored in **/var/lib/docker/** to the dedicated BTRFS partition.
+
+First, we have to stop Docker before migrating
+
+```{r, engine='bash'}
+$ systemctl stop docker
+```
+Copy the old data to the new BTRFS partition
+
+```{r, engine='bash'}
+$ cp -aR /var/lib/docker/* /mnt/docker_tmp/
+```
+Remove the content of /var/lib/docker
+
+```{r, engine='bash'}
+$ rm -rf /var/lib/docker/*
+```
+Unmount the BTRFS partition from the temp folder
+
+```{r, engine='bash'}
+$ umount /mnt/docker_tmp
+```
+Mount the dedicated BTRFS partition to /var/lib/docker
+
+```{r, engine='bash'}
+$ mount /dev/sdb2 /var/lib/docker
+```
+Restore the main Docker directory permissions
+
+```{r, engine='bash'}
+$ chmod 700 /var/lib/docker
+```
 
 ### Configure Docker to use BTRFS
 
