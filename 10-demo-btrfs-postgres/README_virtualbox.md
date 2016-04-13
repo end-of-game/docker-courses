@@ -328,7 +328,7 @@ $ docker run	-it --rm \
 				postgres \
 				sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
 ```
-Turn on the timing function of PostrgeSQL
+Turn on, again, the timing function of PostrgeSQL
 
 ```
 postgres=# \timing
