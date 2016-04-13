@@ -209,6 +209,10 @@ It's time to add two entries in our **/etc/fstab** in order to mount new partiti
 $ /dev/sdb1 /bdd btrfs defaults 0 0
 $ /dev/sdb2 /var/lib/docker btrfs defaults 0 0
 ```
+We can now restart properly the Docker service
+```{r, engine='bash'}
+$ systemctl start docker
+```
 
 ### Configure Docker to use BTRFS
 
