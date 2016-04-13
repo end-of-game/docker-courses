@@ -251,6 +251,11 @@ Verify with a "docker info" command that Btrfs is now activated:
 Storage Driver: btrfs
 ...
 ```
+In order to tail the Docker daemon logs with systemd, use the following command:
+
+```{r, engine='bash'}
+$ journalctl -f -u docker
+```
 
 ### Deploy PostgreSQL container
 
