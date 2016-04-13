@@ -238,7 +238,7 @@ Insert in the edited docker.conf this data:
 ExecStart=
 ExecStart=/usr/bin/docker daemon -H fd:// --storage-driver=btrfs -H tcp://0.0.0.0:2376
 ```
-Save and close and flush changes, and restart the Docker daemon:
+Save, close, flush changes, and restart the Docker daemon:
 
 ```{r, engine='bash'}
 $ systemctl daemon-reload
