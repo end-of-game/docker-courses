@@ -166,9 +166,9 @@ fs created label (null) on /dev/sdb2
 Create two directories in order to mount the new partitions:
 
 ```{r, engine='bash'}
-$ mkdir /app
+$ mkdir /bdd
 $ mkdir /mnt/docker_tmp
-$ mount /dev/sdb1 /app
+$ mount /dev/sdb1 /bdd
 $ mount /dev/sdb2 /mnt/docker_tmp
 ```
 We are going to migrate the data stored in **/var/lib/docker/** to the dedicated BTRFS partition.
@@ -202,6 +202,12 @@ Restore the main Docker directory permissions
 
 ```{r, engine='bash'}
 $ chmod 700 /var/lib/docker
+```
+It's time to add two entries in our **/etc/fstab** in order to mount new partitions at startup
+
+```{r, engine='bash'}
+$ /dev/sdb1 /bdd btrfs defaults 0 0
+$ /dev/sdb2 /var/lib/docker btrfs defaults 0 0
 ```
 
 ### Configure Docker to use BTRFS
