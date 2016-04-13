@@ -285,7 +285,7 @@ $ psql -U postgres
 The main goal of this part is to compare insert duration of our SQL script.
 This script inserts 10 millions lines in a table.
 
-We need to turn on the timing function of PostrgesSQL
+We need to turn on the timing function of PostrgeSQL
 
 ```
 postgres=# \timing
@@ -303,6 +303,8 @@ Time: 2.566 ms
 INSERT 0 10000000
 Time: 12691.182 ms
 ```
+
+Execution time: **12ms**
 
 ## Benchmark BTRFS snapshot system with this data
 
