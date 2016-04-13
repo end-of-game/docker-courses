@@ -216,6 +216,42 @@ $ systemctl start docker
 
 ### Configure Docker to use BTRFS
 
+A "docker info" print this:
+
+```
+...
+Storage Driver: devicemapper
+...
+```
+For CentOS 7.x and RHEL 7.x, the best way is to control and configure Docker with systemd.
+
+Create the **/etc/systemd/system/docker.service.d** directory and the conf file.
+
+```{r, engine='bash'}
+$ mkdir /etc/systemd/system/docker.service.d
+$ vi /etc/systemd/system/docker.service.d/docker.conf
+```
+Insert in the edited docker.conf this data:
+
+```
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd:// --storage-driver=btrfs -H tcp://0.0.0.0:2376
+```
+Save and close and flush changes, and restart the Docker daemon:
+
+```{r, engine='bash'}
+$ systemctl daemon-reload
+$ systemctl restart docker
+```
+Verify with a "docker info" command that Btrfs is now activated:
+
+```
+...
+Storage Driver: btrfs
+...
+```
+
 ### Deploy PostgreSQL container
 
 Create a new Postgre Container
