@@ -287,7 +287,7 @@ $ docker run	-it --rm \
 Else with the way for the new kids on the block ;-)
 
 ``` {r, engine='bash'}
-$ docker exec -it postgres -srv bash
+$ docker exec -it postgres-srv bash
 puis
 $ psql -U postgres
 ```
