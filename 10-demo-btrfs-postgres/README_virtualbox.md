@@ -1,25 +1,11 @@
 # Docker and PostgreSQL with BTRFS support demo (Vagrant/Virtualbox version)
 
-## Introduction
-
-Purpose of this demo:
-
-* Understand and use BTRFS on Linux
-* Learn integration with Docker
-* Use case with a PostgreSQL container and a BTRFS data volume
-
-## Understand and use BTRFS on Linux
-
-## Learn integration with Docker 
-
-## Use case with a PostgreSQL container and a BTRFS data volume
-
-### Prerequisites
+## Prerequisites
 
 - [x] Virtualbox 5.x or later
 - [x] Vagrant by HashiCorp
 
-### Build your Vagrant/Virtualbox environment
+## Build your Vagrant/Virtualbox environment
 
 Download the sandbox scripts. The Vagrantfile add a 2nd hard drive for creating btrfs partitions, the bootstrap.sh runs some system tasks for the first start.
 
@@ -35,7 +21,7 @@ $ vagrant up
 ```
 Wait few minutes... take a coffee
 
-### Create the BTRFS volumes
+## Create the BTRFS volumes
 
 Connect to your freshly started Vagrant sandbox, and become root:
 
@@ -163,7 +149,9 @@ Turning ON incompat feature 'skinny-metadata': reduced-size metadata extent refs
 fs created label (null) on /dev/sdb2
 	nodesize 16384 leafsize 16384 sectorsize 4096 size 10.00GiB
 ```
-Create two directories in order to mount the new partitions:
+The command ```btrfs filesystem show``` will print all the BTRFS drive stats.
+
+Create now two directories in order to mount the new partitions:
 
 ```{r, engine='bash'}
 $ mkdir /bdd
@@ -257,7 +245,7 @@ In order to tail the Docker daemon logs with systemd, use the following command:
 $ journalctl -f -u docker
 ```
 
-### Deploy PostgreSQL container
+## Deploy PostgreSQL container
 
 In your /home/vagrant directory, download the SQL script for coming tests:
 
@@ -292,12 +280,30 @@ puis
 $ psql -U postgres
 ```
 
-### BDD Scalability tests
+## Compare the running time of an SQL script (BTRFS vs ext4)
 
-`postgres=# \i /scripts/users.sql`
+The main goal of this part is to compare insert duration of our SQL script.
+This script inserts 10 millions lines in a table.
 
-#### Compare the running time of an SQL script
+We need to turn on the timing function of PostrgesSQL
 
-#### Benchmark BTRFS snapshot system with this data
+```
+postgres=# \timing
+Timing is on.
+```
+Now let's run our script and see the execution time
+
+```
+postgres=# \i /scripts/users.sql
+psql:/scripts/users.sql:3: NOTICE:  table "users" does not exist, skipping
+DROP TABLE
+Time: 0.276 ms
+CREATE TABLE
+Time: 2.566 ms
+INSERT 0 10000000
+Time: 12691.182 ms
+```
+
+## Benchmark BTRFS snapshot system with this data
 
 
