@@ -306,6 +306,51 @@ Time: 12691.182 ms
 
 Execution time: **12ms**
 
+### Test with an ext4 bdd volume
+
+Create a second volume directory for the bdd data, create a new Postgres instance using this directory as volume:
+
+```{r, engine='bash'}
+$ mkdir /bdd2
+$ docker run 	--name postgres-srv2 \
+				-e POSTGRES_PASSWORD=mysecretpassword \
+				-v /bdd2:/var/lib/postgresql/data \
+				-v `pwd`/users.sql:/scripts/users.sql \
+				-d postgres
+```
+Connect to the postgre-srv2 instance:
+
+```{r, engine='bash'}
+$ docker run	-it --rm \
+				--name postgres-cli2 \
+				--link postgres-srv2:postgres \
+				-v `pwd`/users.sql:/scripts/users.sql \
+				postgres \
+				sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+```
+Turn on the timing function of PostrgeSQL
+
+```
+postgres=# \timing
+Timing is on.
+```
+Now let's run our script on this instance and see the execution time
+
+```
+postgres=# \i /scripts/users.sql
+psql:/scripts/users.sql:3: NOTICE:  table "users" does not exist, skipping
+DROP TABLE
+Time: 0.394 ms
+CREATE TABLE
+Time: 3.996 ms
+INSERT 0 10000000
+Time: 12034.010 ms
+```
+
+Execution time: **12ms**
+
+As a result, we could say there is no write performance benefits using BTRFS with PostgreSQL databases.
+
 ## Benchmark BTRFS snapshot system with this data
 
 
