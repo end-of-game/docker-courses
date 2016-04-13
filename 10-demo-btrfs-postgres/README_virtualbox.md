@@ -265,7 +265,7 @@ In your /home/vagrant directory, download the SQL script for coming tests:
 $ cd /home/vagrant/
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/scripts/users.sql
 ```
-Create a new PostgreSQL container and specify volumes to be mounted ans the Postgres password:
+Create a new PostgreSQL container and specify volumes to be mounted and the Postgres password:
 
 ```{r, engine='bash'}
 $ docker run 	--name postgres-srv \
@@ -284,7 +284,7 @@ $ docker run	-it --rm \
 				postgres \
 				sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
 ```
-Else with the way for the new kids on the block 
+Else with the way for the new kids on the block ;-)
 
 ``` {r, engine='bash'}
 $ docker exec -it postgres -srv bash
