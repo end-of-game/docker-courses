@@ -364,6 +364,8 @@ In this part, we are going to do:
 - simulate a data loss
 - restore a snapshot and check consistency of the PostgreSQL data
 
+### Backup the **/bdd/data** directory with BTFS snapshot
+
 First, we need to create the initial snapshot with the following command:
 
 ```{r, engine='bash'}
@@ -400,5 +402,5 @@ ID 263 gen 36 top level 5 path btrfs/subvolumes/0d7715fd573b2b64896a428d5f238bf5
 ID 264 gen 37 top level 5 path btrfs/subvolumes/739cd362647e63661bfc7dd7e9a2a735f1235a0edef60e16f3b1d4232ec3bc76
 ...
 ```
-
+### Simulate a data loss
 
