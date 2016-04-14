@@ -472,7 +472,7 @@ We can see that the table came back and so the data consitency is good.
 
 BTRFS bring some diagnostic tools such as check function.
 
-You need to stop and delete your docker instance and unmount the filesystem before checking.
+You need to stop/delete your docker instance and unmount the filesystem before checking.
 
 ```{r, engine='bash'}
 $ docker stop postgres-srv
@@ -480,7 +480,7 @@ $ docker rm postgres-srv
 $ umount /bdd
 $ btrfs check --repair /dev/sdb1
 ```
-OUTPUT:
+Output:
 
 ```
 enabling repair mode
