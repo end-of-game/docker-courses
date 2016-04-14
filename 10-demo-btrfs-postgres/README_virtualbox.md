@@ -479,6 +479,10 @@ $ docker stop postgres-srv
 $ docker rm postgres-srv
 $ umount /bdd
 $ btrfs check --repair /dev/sdb1
+```
+OUTPUT:
+
+```
 enabling repair mode
 Checking filesystem on /dev/sdb1
 UUID: f83c25b2-ac92-418e-bf5e-12983ca823d8
