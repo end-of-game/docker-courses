@@ -159,6 +159,11 @@ $ mkdir /mnt/docker_tmp
 $ mount /dev/sdb1 /bdd
 $ mount /dev/sdb2 /mnt/docker_tmp
 ```
+Create a BTRFS subvolume for snapshot needs
+
+```{r, engine='bash'}
+$ btrfs subvolume create /bdd/data
+```
 We are going to migrate the data stored in **/var/lib/docker/** to the dedicated BTRFS partition.
 
 First, we have to stop Docker before migrating
@@ -258,7 +263,7 @@ Create a new PostgreSQL container and specify volumes to be mounted and the Post
 ```{r, engine='bash'}
 $ docker run 	--name postgres-srv \
 				-e POSTGRES_PASSWORD=mysecretpassword \
-				-v /bdd:/var/lib/postgresql/data \
+				-v /bdd/data:/var/lib/postgresql/data \
 				-v `pwd`/users.sql:/scripts/users.sql \
 				-d postgres
 ```
@@ -351,6 +356,49 @@ Execution time: **12ms**
 
 As a result, we could say there is no write performance benefits using BTRFS with PostgreSQL databases.
 
-## Benchmark BTRFS snapshot system with this data
+## Backup with BTRFS snapshot system
+
+In this part, we are going to do:
+
+- backup the **/bdd/data** directory with BTFS snapshot
+- simulate a data loss
+- restore a snapshot and check consistency of the PostgreSQL data
+
+First, we need to create the initial snapshot with the following command:
+
+```{r, engine='bash'}
+$ btrfs subvolume snapshot -r /bdd/data /bdd/backup
+Create a readonly snapshot of '/bdd/data' in '/bdd/backup'
+```
+Check the result in the /bdd directory, we can the see the backup directory created by BTRFS snapshot:
+
+```{r, engine='bash'}
+ll /bdd/
+total 0
+drwx------. 1 systemd-bus-proxy root 514 13 avril 11:54 backup
+drwx------. 1 systemd-bus-proxy root 514 13 avril 11:54 data
+```
+
+With the following command, we can see that snapshot previously created is using also BTRFS subvolume:
+
+```{r, engine='bash'}
+$ btrfs subvolume list -a /bdd
+ID 261 gen 216 top level 5 path data
+ID 263 gen 191 top level 5 path backup
+```
+
+Just for fun, if we take a look at the docker directory, we will note that the directory is using this snapshot technology for the docker copy-on-write system:
+
+```{r, engine='bash'}
+$ btrfs subvolume list -a /var/lib/docker/
+ID 258 gen 31 top level 5 path btrfs/subvolumes/5213ae83ed4bc30cf61b3530225c1943ae25b06c8da2571fa6fa79ebd9adc5b2
+ID 259 gen 32 top level 5 path btrfs/subvolumes/7951946340dd993fdaf31ed85eaa4bcada4984c8b03702364998798d409ef4c2
+ID 260 gen 33 top level 5 path btrfs/subvolumes/b1eaeb0806046837020f2ef275f4a04011a02e540ec19a76f38b1ed0837c2f6c
+ID 261 gen 34 top level 5 path btrfs/subvolumes/25e07354cd5324077643078126b7f2da8c7885d2180c940de1e16cc4ed8cc327
+ID 262 gen 35 top level 5 path btrfs/subvolumes/f0e4d78411718e7c1abde902cf5475bb06a134ed09ebdca5e66891a774e58545
+ID 263 gen 36 top level 5 path btrfs/subvolumes/0d7715fd573b2b64896a428d5f238bf5595e356f8bb550bee5035f8ce93b427c
+ID 264 gen 37 top level 5 path btrfs/subvolumes/739cd362647e63661bfc7dd7e9a2a735f1235a0edef60e16f3b1d4232ec3bc76
+...
+```
 
 
