@@ -112,6 +112,9 @@ Identifiant de disque : 0xb6a76dca
 Périphérique Amorçage  Début         Fin      Blocs    Id. Système
 /dev/sdb1            2048    20973567    10485760   83  Linux
 /dev/sdb2        20973568    41943039    10484736   83  Linux
+
+# Exit and write partition table
+w
 ```
 We can see that we have created two partitions of 10Go each on the **/dev/sdb** drive
 
@@ -375,7 +378,7 @@ Create a readonly snapshot of '/bdd/data' in '/bdd/backup'
 Check the result in the /bdd directory, we can the see the backup directory created by BTRFS snapshot:
 
 ```{r, engine='bash'}
-ll /bdd/
+$ ll /bdd/
 total 0
 drwx------. 1 systemd-bus-proxy root 514 13 avril 11:54 backup
 drwx------. 1 systemd-bus-proxy root 514 13 avril 11:54 data
