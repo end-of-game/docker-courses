@@ -442,12 +442,13 @@ $ exit
 
 We have just simulated an accidental data loss.
 
-Try to restore the data lost:
+### Try to restore the data lost
 
 ```{r, engine='bash'}
 $ docker stop postgres-srv
-$ rm -rf /bdd/data/*
-$ cp -aR /bdd/backup/* /bdd/data/
+$ btrfs subvolume delete /bdd/data
+$ btrfs subvolume snapshot /bdd/backup /bdd/data
+Create a RW snapshot of '/bdd/backup' in '/bdd/data'
 $ docker start postgres-srv
 $ docker run    -it --rm \
                 --name postgres-cli \
@@ -465,5 +466,36 @@ postgres=# \d
 ```
 We can see that the table came back and so the data consitency is good.
 
+## Going further with BTRFS
 
+### Check & repair
 
+BTRFS bring some diagnostic tools such as check function.
+
+You need to stop and delete your docker instance and unmount the filesystem before checking.
+
+```{r, engine='bash'}
+$ docker stop postgres-srv
+$ docker rm postgres-srv
+$ umount /bdd
+$ btrfs check --repair /dev/sdb1
+enabling repair mode
+Checking filesystem on /dev/sdb1
+UUID: f83c25b2-ac92-418e-bf5e-12983ca823d8
+checking extents
+Fixed 0 roots.
+checking free space cache
+cache and super generation don't match, space cache will be invalidated
+checking fs roots
+checking csums
+checking root refs
+found 1619521540 bytes used err is 0
+total csum bytes: 1575404
+total tree bytes: 6307840
+total fs tree bytes: 2949120
+total extent tree bytes: 933888
+btree space waste bytes: 1332675
+file data blocks allocated: 984815312896
+ referenced 1853227008
+btrfs-progs v3.19.1
+```
