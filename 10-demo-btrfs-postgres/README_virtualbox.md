@@ -451,7 +451,7 @@ postgres=# \d
  public | users | table | postgres
 (1 row)
 ```
-We can see that the table is came back and so the data consitency is good.
+We can see that the table came back and so the data consitency is good.
 
 
 
