@@ -310,13 +310,12 @@ CREATE TABLE
 Time: 2.566 ms
 INSERT 0 10000000
 Time: 12691.182 ms
+postgres=# \q
+
+$ exit
 ```
 
 Execution time: **12ms**
-
-Exit psql (\q)
-
-Exit container
 
 ### Test with an ext4 bdd volume
 
@@ -357,13 +356,12 @@ CREATE TABLE
 Time: 3.996 ms
 INSERT 0 10000000
 Time: 12034.010 ms
+postgres=# \q
+
+$ exit
 ```
 
 Execution time: **12ms**
-
-Exit psql (\q)
-
-Exit container
 
 As a result, we could say there is no write performance benefits using BTRFS with PostgreSQL databases.
 
@@ -437,11 +435,14 @@ postgres=# DROP TABLE users;
 DROP TABLE
 postgres=# \d
 No relations found.
+postgres=# \q
+
+$ exit
 ```
 
 We have just simulated an accidental data loss.
 
-Exit from our sql client, quit properly the Postgres container and try to restore the data lost:
+Try to restore the data lost:
 
 ```{r, engine='bash'}
 $ docker stop postgres-srv
