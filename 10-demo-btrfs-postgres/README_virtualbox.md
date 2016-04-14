@@ -360,11 +360,11 @@ As a result, we could say there is no write performance benefits using BTRFS wit
 
 In this part, we are going to do:
 
-- backup the **/bdd/data** directory with BTFS snapshot
+- backup the **/bdd/data** directory with BTRFS snapshot
 - simulate a data loss
 - restore a snapshot and check consistency of the PostgreSQL data
 
-### Backup the **/bdd/data** directory with BTFS snapshot
+### Backup the **/bdd/data** directory with BTRFS snapshot
 
 First, we need to create the initial snapshot with the following command:
 
