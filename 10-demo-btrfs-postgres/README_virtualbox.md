@@ -404,3 +404,54 @@ ID 264 gen 37 top level 5 path btrfs/subvolumes/739cd362647e63661bfc7dd7e9a2a735
 ```
 ### Simulate a data loss
 
+Connect to your PostgreSQL server and delete the users table previously created:
+
+```{r, engine='bash'}
+$ docker run    -it --rm \
+                --name postgres-cli \
+                --link postgres-srv:postgres \
+                -v `pwd`/users.sql:/scripts/users.sql \
+                postgres \
+                sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+
+postgres=# \d
+         List of relations
+ Schema | Name  | Type  |  Owner   
+--------+-------+-------+----------
+ public | users | table | postgres
+(1 row)
+
+# First, drop the users table previously listed
+postgres=# DROP TABLE users;
+DROP TABLE
+postgres=# \d
+No relations found.
+```
+
+We have just simulated an accidental data loss.
+
+Exit from our sql client and try to restore the data lost:
+
+```{r, engine='bash'}
+$ docker stop postgres-srv
+$ rm -rf /bdd/data/*
+$ cp -aR /bdd/backup/* /bdd/data/
+$ docker start postgres-srv
+$ docker run    -it --rm \
+                --name postgres-cli \
+                --link postgres-srv:postgres \
+                -v `pwd`/users.sql:/scripts/users.sql \
+                postgres \
+                sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+
+postgres=# \d
+         List of relations
+ Schema | Name  | Type  |  Owner   
+--------+-------+-------+----------
+ public | users | table | postgres
+(1 row)
+```
+We can see that the table is came back and so the data consitency is good.
+
+
+
