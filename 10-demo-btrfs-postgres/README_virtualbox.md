@@ -314,6 +314,10 @@ Time: 12691.182 ms
 
 Execution time: **12ms**
 
+Exit psql (\q)
+
+Exit container
+
 ### Test with an ext4 bdd volume
 
 Create a second volume directory for the bdd data, create a new Postgres instance using this directory as volume:
@@ -356,6 +360,10 @@ Time: 12034.010 ms
 ```
 
 Execution time: **12ms**
+
+Exit psql (\q)
+
+Exit container
 
 As a result, we could say there is no write performance benefits using BTRFS with PostgreSQL databases.
 
@@ -405,7 +413,7 @@ ID 263 gen 36 top level 5 path btrfs/subvolumes/0d7715fd573b2b64896a428d5f238bf5
 ID 264 gen 37 top level 5 path btrfs/subvolumes/739cd362647e63661bfc7dd7e9a2a735f1235a0edef60e16f3b1d4232ec3bc76
 ...
 ```
-### Simulate a data loss
+### Play a data loss
 
 Connect to your PostgreSQL server and delete the users table previously created:
 
