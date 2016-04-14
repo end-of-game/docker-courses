@@ -430,7 +430,7 @@ No relations found.
 
 We have just simulated an accidental data loss.
 
-Exit from our sql client and try to restore the data lost:
+Exit from our sql client, quit properly the Postgres container and try to restore the data lost:
 
 ```{r, engine='bash'}
 $ docker stop postgres-srv
