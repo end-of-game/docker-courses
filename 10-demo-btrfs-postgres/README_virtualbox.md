@@ -316,11 +316,11 @@ postgres=# \q
 $ exit
 ```
 
-Execution time: **12ms**
+Execution time: **12s**
 
-### Test with an ext4 bdd volume
+### Test with an ext4 database volume
 
-Create a second volume directory for the bdd data, create a new Postgres instance using this directory as volume:
+Create a second volume directory for the database, create a new Postgres instance using this directory as volume:
 
 ```{r, engine='bash'}
 $ mkdir /bdd2
@@ -362,7 +362,7 @@ postgres=# \q
 $ exit
 ```
 
-Execution time: **12ms**
+Execution time: **12s**
 
 As a result, we could say there is no write performance benefits using BTRFS with PostgreSQL databases.
 
