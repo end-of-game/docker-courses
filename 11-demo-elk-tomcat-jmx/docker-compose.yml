@@ -1,0 +1,28 @@
+elk:
+  build: images/elk-logstash-jmx-connector
+  container_name: elk
+  hostname: elk.treeptik.local
+  ports:
+    - "5601:5601"
+    - "9200:9200"
+    - "5044:5044"
+    - "5000:5000"
+  volumes:
+    - ~/Docker/docker-elk-demo/conf/elk/etc/logstash/conf.d/03-jmx-input.conf:/etc/logstash/conf.d/03-jmx-input.conf
+    - ~/Docker/docker-elk-demo/conf/elk/etc/logstash/conf.d/12-jmx.conf:/etc/logstash/conf.d/12-jmx.conf
+    - ~/Docker/docker-elk-demo/conf/elk/etc/logstash/jmx/logstash-jmx.conf:/etc/logstash/jmx/logstash-jmx.conf
+  links:
+    - "tomcat"
+
+tomcat:
+  image: tomcat
+  container_name: tomcat
+  hostname: tomcat.treeptik.local
+  ports:
+    - "8080:8080"
+    - "9999:9999"
+  environment:
+    - "JAVA_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999
+      -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=192.168.99.100"
+  volumes:
+    - ~/Docker/docker-elk-demo/conf/tomcat/usr/local/tomcat/conf/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
