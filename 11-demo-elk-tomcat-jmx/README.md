@@ -10,3 +10,10 @@ Please, custom the docker-compose.yml with your Docker host IP:
 **-Djava.rmi.server.hostname=192.168.99.100**
 
 You can find all configuration files for each app in the **conf** folder
+
+Here are some Kibana searches samples:
+
+- metric_path="tomcat_jvm.Memory.HeapMemoryUsage.used"
+- metric_path="tomcat_jvm.Memory.HeapMemoryUsage.max"
+- metric_path="tomcat_jvm.Memory.HeapMemoryUsage.init"
+- metric_path="tomcat_jvm.Memory.HeapMemoryUsage.commited"
