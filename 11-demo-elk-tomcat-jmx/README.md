@@ -1,6 +1,6 @@
 ## Docker ELK with Tomcat and JMX connection demo
 
-This demo use Docker Compose to build the following stack:
+This demo uses Docker Compose to build the following stack:
 
 - 1 ELK container built with JMX Plugin
 - 1 Tomcat container with RMI listen enabled
