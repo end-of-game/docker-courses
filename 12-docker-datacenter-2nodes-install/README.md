@@ -86,6 +86,8 @@ The Dashboard page of UCP should list all your controller nodes now:
 
 ## Download a client certificate bundle
 
+> THIS STEP CONNECT YOUR DOCKER CLIENT TO THE UCP CLUSTER
+
 To download a client certificate bundle, log into UCP, and navigate to your profile page.
 
 Click the Create a Client Bundle button to download the certificate bundle and save it in our vagrant project directory in order to grant access inside the two VMs.
