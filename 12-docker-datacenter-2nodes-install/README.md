@@ -85,3 +85,28 @@ The Dashboard page of UCP should list all your controller nodes now:
 (img/ucp_dashboard_2.png)
 
 ## Download a client certificate bundle
+
+To download a client certificate bundle, log into UCP, and navigate to your profile page.
+
+Click the Create a Client Bundle button to download the certificate bundle and save it in our vagrant project directory in order to grant access inside the two VMs.
+
+On the host shell, inside the vagrant project directory:
+
+```{r, engine='bash'}
+$ unzip ucp-bundle-admin.zip
+```
+Login to your controller VM:
+
+```{r, engine='bash'}
+$ vagrant ssh dd-controller
+```
+Navigate to the directory where you downloaded the bundle. Then run the env.sh script to start using the client certificates.
+
+```{r, engine='bash'}
+$ cd /vagrant/ucp-bundle-admin
+$ eval $(<env.sh)
+```
+
+The env.sh script updates the DOCKER_HOST and DOCKER_CERT_PATH environment variables to use the certificates you downloaded.
+
+From now on, when you use the Docker CLI client, it includes your client certificates as part of the request to the Docker Engine. You can now use the docker info command to see if the certificates are being sent to the Docker Engine.
