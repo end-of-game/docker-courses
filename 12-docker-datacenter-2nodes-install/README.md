@@ -13,8 +13,8 @@ Download the sandbox scripts. The Vagrantfile will build a controller and a node
 
 ```{r, engine='bash'}
 $ mkdir sandbox_DUCP
-$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/Vagrantfile
-$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/10-demo-btrfs-postgres/sandbox_CentOS/bootstrap.sh
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/12-docker-datacenter-2nodes-install/Vagrantfile
+$ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/12-docker-datacenter-2nodes-install/bootstrap.sh
 ```
 Build your 2 nodes:
 
