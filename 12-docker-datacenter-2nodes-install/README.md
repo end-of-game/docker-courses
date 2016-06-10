@@ -46,7 +46,7 @@ When asking on "Additional aliases", press enter.
 To finish the setup process, restart the docker daemon:
 
 ```{r, engine='bash'}
-service docker restart
+sudo service docker restart
 ```
 
 After the setup process, you can now login to the UCP dashboard at https://192.168.50.10:443
@@ -77,7 +77,7 @@ docker run --rm -it --name ucp \
 To finish the setup process, restart the docker daemon:
 
 ```{r, engine='bash'}
-service docker restart
+sudo service docker restart
 ```
 The Dashboard page of UCP should list all your controller nodes now:
 
@@ -148,7 +148,7 @@ $ curl -k https://192.168.50.10/ca > ucp-ca.pem
 $ docker run -it --rm \
   docker/dtr install \
   --ucp-url https://192.168.50.10 \
-  --dtr-external-url 192.168.50.10 \
+  --dtr-external-url 192.168.50.11 \
   --ucp-ca "$(cat ucp-ca.pem)"
 ```
 
@@ -160,3 +160,78 @@ You can also access the DTR web UI, to make sure it is working. In your browser,
 
 ![UCP Dashboard]
 (img/dtr_dashboard_1.png)
+
+## Connect DTR and UCP
+
+### Get the UCP CA certificate
+
+Log in with ssh on the UCP controller node and don't connect the CLI to the cluster for the next command.
+
+Get the UCP cluster CA certificate:
+
+```{r, engine='bash'}
+$ docker run --rm --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp dump-certs --cluster --ca
+```  
+This command prints a certificate block like this:
+
+```
+-----BEGIN CERTIFICATE-----
+MIIFJDCCAwygAwIBAgIIDAApo7wvQCIwDQYJKoZIhvcNAQENBQAwHjEcMBoGA1UE
+AxMTVUNQIENsdXN0ZXIgUm9vdCBDQTAeFw0xNjA2MDEyMTMzMDBaFw0yMTA1MzEy
+...
+xMOixABCUI3jx6k38yAHTO8Q+gyiqj41M/QjrwbyFJD9k69sG6MknguZAMcRwmBs
+3Fjz0e6mRK7qfXsSLGZH/3+iCV5heXz8
+-----END CERTIFICATE-----
+```
+Copy the resulting certificate to the ucp-cluster-ca.pem file, and store it on your local machine. (/vagrant/ucp-bundle-admin/)
+
+### Get the DTR CA certificate
+
+Now, get the root CA certificate used by DTR:
+
+* Log into the DTR web UI, and navigate to the Settings screen.
+* In the Domain section, click the Show TLS settings link.
+* Copy the content of the TLS CA field.
+* Copy the DTR CA certificate to the dtr-ca.pem file, and store it on your local machine. (/vagrant/ucp-bundle-admin/)
+
+### Integrate UCP with DTR
+
+Configure UCP to know about DTR:
+
+* Log into the UCP web UI, navigate to the Settings page, and click the DTR tab.
+* In the URL field, add the URL of your Docker Trusted Registry.
+* Don’t set the Insecure option.
+* Upload the dtr-ca.pem file.
+
+    If your Docker Trusted Registry is configured to use a certificate issued by a third-party root CA, you can skip this step, because UCP will trust the CA that issued the certificate.
+
+    If you’ve not configured your DTR installation to use a certificate issued by a third-party root CA, or configured it to use internal or self-signed certificates, you must upload the dtr-ca.pem file.
+
+* Click the Update Registry button to save the changes.
+
+### Configure DTR to trust UCP
+
+In this step, you’ll configure DTR to trust the UCP cluster root CA. This way, requests to DTR that present a certificate issued by the UCP cluster root CA are authorized:
+
+* Log into the DTR web UI, and navigate to the Settings page.
+* In the Auth Bypass TLS Root CA field, paste the content of the ucp-cluster-ca.pem file.
+* Click the Save button to save the changes.
+
+### Configure UCP Docker Engines
+
+For each UCP node, copy the dtr-ca.pem file to /etc/docker/certs.d/$DTR_DOMAIN_NAME/ca.crt.
+
+```{r, engine='bash'}
+$ sudo mkdir -p /etc/docker/certs.d/192.168.50.11
+$ sudo cp /vagrant/ucp-bundle-admin/dtr-ca.pem /etc/docker/certs.d/192.168.50.11/ca.crt
+```
+
+To finish the link process, restart the docker daemon on all nodes:
+
+```{r, engine='bash'}
+sudo service docker restart
+```
+
+
