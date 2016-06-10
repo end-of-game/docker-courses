@@ -66,8 +66,7 @@ As a reminder:
 - TCP port 2376 need to be open between the Swarm Manager and Swarm nodes
 - TCP port 3376 need to be open between the Docker Engine client and the Swarm Manager
 
-
-### Start Interlock
+### Start Nginx
 
 Connect your client shell to the Swarm manager daemon:
 
@@ -75,7 +74,15 @@ Connect your client shell to the Swarm manager daemon:
 $ eval $(docker-machine env --swarm manager)
 ```
 
-Bring up our Interlock container:
+Bring up our Nginx container:
+
+```{r, engine='bash', count_lines}
+$ docker-compose up -d nginx
+```
+
+### Start Interlock
+
+Bring up now our Interlock container:
 
 ```{r, engine='bash', count_lines}
 $ docker-compose up -d interlock
@@ -96,14 +103,6 @@ beb0746aeb94        swarm:latest               "/swarm join --advert"   6 minute
 e27396ff7c34        swarm:latest               "/swarm join --advert"   7 minutes ago       Up 7 minutes                                         agent1/swarm-agent
 e9c8a853a113        swarm:latest               "/swarm join --advert"   8 minutes ago       Up 8 minutes                                         manager/swarm-agent
 0cc6cedf5119        swarm:latest               "/swarm manage --tlsv"   8 minutes ago       Up 8 minutes                                         manager/swarm-agent-master
-```
-
-### Start Nginx
-
-Bring up our Nginx container:
-
-```{r, engine='bash', count_lines}
-$ docker-compose up -d nginx
 ```
 
 ### Start example App
