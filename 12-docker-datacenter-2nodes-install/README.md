@@ -1,4 +1,4 @@
-# Docker Datacenter 2 nodes installation (UCP+DTR)
+# Docker Datacenter two nodes installation (UCP+DTR)
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ $ vagrant up
 ```
 Wait few minutes... take a coffee
 
-## Install the UCP controller
+## Install the Universal Control Pane "controller"
 
 Login to your controller VM:
 
@@ -59,7 +59,7 @@ On the next screen upload you Docker Datacenter licence and then you can access 
 ![UCP Dashboard]
 (img/ucp_dashboard_1.png)
 
-## Install the UCP node 1
+## Install the Universal Control Pane "node 1"
 
 Login to your node1 VM:
 
@@ -111,4 +111,52 @@ $ eval $(<env.sh)
 
 The env.sh script updates the DOCKER_HOST and DOCKER_CERT_PATH environment variables to use the certificates you downloaded.
 
-From now on, when you use the Docker CLI client, it includes your client certificates as part of the request to the Docker Engine. You can now use the docker info command to see if the certificates are being sent to the Docker Engine.
+From now on, when you use the Docker CLI client, it includes your client certificates as part of the request to the Docker Engine. You can now use the docker info command to see if you can see the cluster infos:
+
+```
+$ docker info
+Containers: 12
+ Running: 12
+ Paused: 0
+ Stopped: 0
+Images: 20
+Server Version: swarm/1.2.3
+Role: primary
+Strategy: spread
+Filters: health, port, containerslots, dependency, affinity, constraint
+Nodes: 2
+ dd-controller: 192.168.50.10:12376
+  └ ID: KRVM:ZT23:EP6M:EV5Z:BOLL:6GVU:7YZV:RMGG:RCHN:MW72:GEXF:3WJW
+  └ Status: Healthy
+  └ Containers: 10
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 3.086 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=3.13.0-87-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
+  └ UpdatedAt: 2016-06-10T12:53:43Z
+  └ ServerVersion: 1.10.3-cs3
+ dd-node1: 192.168.50.11:12376
+...
+...
+```
+
+## Install Docker Trusted Registry (DTR)
+
+Login on a cluster node and setup your CLI to use the Client Bundle as explained before, and run:
+
+```{r, engine='bash'}
+$ curl -k https://192.168.50.10/ca > ucp-ca.pem
+$ docker run -it --rm \
+  docker/dtr install \
+  --ucp-url https://192.168.50.10 \
+  --dtr-external-url 192.168.50.10 \
+  --ucp-ca "$(cat ucp-ca.pem)"
+```
+
+### Check that DTR is running
+
+In your browser, navigate to the the Docker Universal Control Plane web UI, and navigate to the Applications screen. DTR should be listed as an application.
+
+You can also access the DTR web UI, to make sure it is working. In your browser, navigate to the address were you installed DTR (https://192.168.50.11)
+
+![UCP Dashboard]
+(img/dtr_dashboard_1.png)
