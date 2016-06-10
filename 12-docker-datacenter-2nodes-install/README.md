@@ -233,5 +233,7 @@ To finish the link process, restart the docker daemon on all nodes:
 ```{r, engine='bash'}
 sudo service docker restart
 ```
+### Login on our DTR
 
 
+docker login -u admin -p treeptik -e c.vandome@treeptik.fr 192.168.50.11
