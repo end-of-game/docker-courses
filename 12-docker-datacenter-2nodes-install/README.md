@@ -12,7 +12,7 @@ Download the sandbox scripts. The Vagrantfile will build a controller and a node
 ### MODIFIER CHEMINS vers les scripts !!!!!!!!
 
 ```{r, engine='bash'}
-$ mkdir sandbox_DUCP
+$ mkdir sandbox_DUCP && cd sandbox_DUCP
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/12-docker-datacenter-2nodes-install/Vagrantfile
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/12-docker-datacenter-2nodes-install/bootstrap.sh
 ```
@@ -43,6 +43,12 @@ $ docker run --rm -it --name ucp \
 
 When asking on "Additional aliases", press enter.
 
+To finish the setup process, restart the docker daemon:
+
+```{r, engine='bash'}
+service docker restart
+```
+
 After the setup process, you can now login to the UCP dashboard at https://192.168.50.10:443
 
 ![UCP Login]
@@ -60,5 +66,22 @@ Login to your node1 VM:
 ```{r, engine='bash'}
 vagrant ssh dd-node1
 ```
+Run the second node UCP installer:
 
+```{r, engine='bash'}
+docker run --rm -it --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp join -i \
+  --host-address 192.168.50.11
+```
+To finish the setup process, restart the docker daemon:
 
+```{r, engine='bash'}
+service docker restart
+```
+The Dashboard page of UCP should list all your controller nodes now:
+
+![UCP Dashboard]
+(img/ucp_dashboard_2.png)
+
+## Download a client certificate bundle
