@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+Vagrant.configure(2) do |config|
+
+  config.vm.define "dd-controller" do |ddc|
+    ddc.vm.provider "virtualbox" do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "3072", "--cpus", "1"]
+    end
+    ddc.vm.box = "ubuntu/trusty64"
+    ddc.vm.hostname = "dd-controller"
+    ddc.vm.network "private_network", ip: "192.168.50.10"
+    ddc.vm.provision :shell, path: "bootstrap.sh"
+  end
+
+  config.vm.define "dd-node1" do |ddn1|
+    ddn1.vm.provider "virtualbox" do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2"]
+    end
+    ddn1.vm.box = "ubuntu/trusty64"
+    ddn1.vm.hostname = "dd-node1"
+    ddn1.vm.network "private_network", ip: "192.168.50.11"
+    ddn1.vm.provision :shell, path: "bootstrap.sh"
+  end
+
+end
