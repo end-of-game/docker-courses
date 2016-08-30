@@ -191,7 +191,7 @@ Copy the resulting certificate to the ucp-cluster-ca.pem file, and store it on y
 
 Now, get the root CA certificate used by DTR:
 
-* Log into the DTR web UI, and navigate to the Settings screen.
+* Log into the DTR web UI (https://192.168.50.11), and navigate to the Settings screen.
 * In the Domain section, click the Show TLS settings link.
 * Copy the content of the TLS CA field.
 * Copy the DTR CA certificate to the dtr-ca.pem file, and store it on your local machine. (/vagrant/ucp-bundle-admin/)
