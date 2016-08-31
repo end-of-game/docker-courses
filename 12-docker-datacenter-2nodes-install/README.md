@@ -9,8 +9,6 @@
 
 Download the sandbox scripts. The Vagrantfile will build a controller and a node, the bootstrap.sh install on each VM the docker daemon CS.
 
-### MODIFIER CHEMINS vers les scripts !!!!
-
 ```{r, engine='bash'}
 $ mkdir sandbox_DUCP && cd sandbox_DUCP
 $ curl -O https://raw.githubusercontent.com/Treeptik/docker-courses/master/12-docker-datacenter-2nodes-install/Vagrantfile
