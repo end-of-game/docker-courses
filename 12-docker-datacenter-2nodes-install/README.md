@@ -7,7 +7,8 @@
 
 ## Build your Vagrant/Virtualbox environment
 
-Download the sandbox scripts. The Vagrantfile will build a controller and a node, the bootstrap.sh install on each VM the docker daemon CS.
+Download the sandbox scripts.
+The Vagrantfile will build a controller and a node, the bootstrap.sh install on each VM the docker daemon CS.
 
 ```{r, engine='bash'}
 $ mkdir sandbox_DUCP && cd sandbox_DUCP
@@ -19,7 +20,7 @@ Build your 2 nodes:
 ```{r, engine='bash'}
 $ vagrant up
 ```
-Wait few minutes... take a coffee
+Wait few minutes... take a coffee waiting for the booting 2 VMs
 
 ## Install the Universal Control Pane "controller"
 
@@ -72,6 +73,8 @@ docker run --rm -it --name ucp \
   docker/ucp join -i \
   --host-address 192.168.50.11
 ```
+When prompted, enter the UCP controller URL: https://192.168.50.10
+
 To finish the setup process, restart the docker daemon:
 
 ```{r, engine='bash'}
