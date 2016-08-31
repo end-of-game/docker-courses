@@ -142,7 +142,7 @@ Nodes: 2
 
 ## Install Docker Trusted Registry (DTR)
 
-Login on a cluster node and setup your CLI to use the Client Bundle as explained before, and run:
+Login on **NODE 1** and setup your CLI to use the Client Bundle as explained before, and run:
 
 ```{r, engine='bash'}
 $ curl -k https://192.168.50.10/ca > ucp-ca.pem
