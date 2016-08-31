@@ -202,7 +202,7 @@ Now, get the root CA certificate used by DTR:
 Configure UCP to know about DTR:
 
 * Log into the UCP web UI, navigate to the Settings page, and click the DTR tab.
-* In the URL field, add the URL of your Docker Trusted Registry.
+* In the URL field, add the URL of your Docker Trusted Registry (https://192.168.50.11)
 * Don’t set the Insecure option.
 * Upload the dtr-ca.pem file.
 
