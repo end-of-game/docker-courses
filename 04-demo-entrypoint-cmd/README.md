@@ -9,5 +9,6 @@ docker run -it --rm image4
 ```
 
 ## LIST SUB DIR
+```
 docker run -it image4 /etc
-
+```
