@@ -1,8 +1,8 @@
-## BUILDER IMAHE
+## BUILDER IMAGE
 
 ```docker build -t=image4 .```
 
-## LISTE AND EXPLAIN --rm
+## LIST AND EXPLAIN --rm
 ```
 docker run -it image4 
 docker run -it --rm image4 
