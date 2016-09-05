@@ -36,7 +36,6 @@ docker run --name demo1 -d ubuntu sh -c 'while true ; do echo hello world ; slee
 # #########################################################
 docker ps
 docker logs --tail 10 --follow $(docker ps -aql)
-docker attach --sig-proxy=false $(docker ps -aql)
 docker stop <containerId>
 docker ps
 docker ps -a
@@ -51,7 +50,7 @@ exit # container is dead
 docker ps -a 
 docker start demo
 docker exec -it demo1 ls -la
-docker inspect demo
+docker inspect demo1
 # show the persistance files
 vm-docke-rmachine-with-root> find /mnt -name file1.txt
 	
