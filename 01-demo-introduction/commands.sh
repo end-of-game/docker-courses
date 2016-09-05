@@ -62,20 +62,20 @@ docker run -i -t ubuntu bash
 touch /custom.txt
 exit
 docker ps -a
-docker commit <containerId> demojug/ubuntu-custom
-docker run -it demojug/ubuntu-custom bash
+docker commit <containerId> demo/ubuntu-custom
+docker run -it demo/ubuntu-custom bash
 ls -la
 exit
 
 # #########################################################
 # DOCKER VOLUMES EXAMPLES
 # #########################################################
-docker run -v /Users/nicolas/demojug:/transfert -it ubuntu bash
+docker run -v /Users/nicolas/demo-docker:/transfert -it ubuntu bash
 touch /transfert/joueur.txt
 exit
-#aller dans /Users/nicolas/demojug et creer un nouveau fichier
+#aller dans /Users/nicolas/demo-docker et creer un nouveau fichier
 docker ps -aq
-docker start -a $(docker ps -aql)
-
+docker start $(docker ps -aql)
+docker exec -it $(docker ps -aql) bash
 
 
