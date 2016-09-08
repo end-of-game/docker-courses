@@ -1,0 +1,233 @@
+# Docker Datacenter two nodes installation (UCP+DTR)
+
+## Prerequisites
+
+- [x] Virtualbox 5.x or later
+- [x] Docker Machine 0.7.x or later
+
+## Create docker machine vm
+
+```{r, engine='bash'}
+$ docker-machine create -d virtualbox --virtualbox-memory "4096" dd-controller
+$ docker-machine create -d virtualbox --virtualbox-memory "4096" dd-node1
+```
+
+## Install the Universal Control Pane "controller"
+
+In this example we’ll be running the install command interactively, so that the command prompts for the necessary configuration values. You can also use flags to pass values to the install command.
+
+Run the UCP installer with the following command:
+
+```{r, engine='bash'}
+$ docker-machine --native-ssh ssh dd-controller docker run \
+  --rm -ti --name ucp -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp install -i --host-address $(docker-machine ip dd-controller) \
+  --swarm-port 2377
+```
+
+When asking on "Additional aliases", press enter.
+
+To finish the setup process, restart the docker daemon:
+
+```{r, engine='bash'}
+$ docker-machine ssh sudo dd-controller /etc/init.d/docker restart
+```
+
+After the setup process, you can now login to the UCP dashboard at https://$(docker-machine ip dd-controller)
+
+![UCP Login]
+(img/ucp_login.png)
+
+On the next screen upload you Docker Datacenter licence and then you can access for the first time to the DUCP dashboard:
+
+![UCP Dashboard]
+(img/ucp_dashboard_1.png)
+
+## Install the Universal Control Pane "node 1"
+
+Run the second node UCP installer:
+
+```{r, engine='bash'}
+$ docker-machine ssh dd-node1 docker run --rm -it \
+  --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp \
+  join -i --host-address $(docker-machine ip dd-node1) \
+  --url https://$(docker-machine ip dd-controller) --swarm-port 2377
+```
+
+To finish the setup process, restart the docker daemon:
+
+```{r, engine='bash'}
+$ docker-machine ssh sudo dd-node1 /etc/init.d/docker restart
+```
+
+The Dashboard page of UCP should list all your controller nodes now:
+
+![UCP Dashboard]
+(img/ucp_dashboard_2.png)
+
+## Download a client certificate bundle
+
+> THIS STEP CONNECT YOUR DOCKER CLIENT TO THE UCP CLUSTER
+
+To download a client certificate bundle, log into UCP, and navigate to your profile page.
+
+Click the Create a Client Bundle button to download the certificate bundle and save it in our vagrant project directory in order to grant access inside the two VMs.
+
+On the host shell, inside the vagrant project directory:
+
+```{r, engine='bash'}
+$ unzip ucp-bundle-admin.zip -d ucp-bundle-admin
+```
+
+Copy unzipped file to the VM:
+
+```{r, engine='bash'}
+$ docker-machine scp -r ucp-bundle-admin/ dd-controller:/tmp
+```
+
+Navigate to the directory where you downloaded the bundle. Then run the env.sh script to start using the client certificates.
+
+```{r, engine='bash'}
+$ docker-machine ssh dd-controller cd /tmp/ucp-bundle-admin && eval $(<env.sh) && docker info
+```
+
+The env.sh script updates the DOCKER_HOST and DOCKER_CERT_PATH environment variables to use the certificates you downloaded.
+
+From now on, when you use the Docker CLI client, it includes your client certificates as part of the request to the Docker Engine. You can now use the docker info command to see if you can see the cluster infos:
+
+```
+$ Containers: 12
+ Running: 12
+ Paused: 0
+ Stopped: 0
+Images: 20
+Server Version: swarm/1.2.5
+Role: primary
+Strategy: spread
+Filters: health, port, containerslots, dependency, affinity, constraint
+Nodes: 2
+ dd-controller: 192.168.99.100:12376
+  └ ID: XSJS:I742:TZLC:4JU2:XIO7:G2TI:Q4IM:OCNL:BQRF:6HEK:GB5J:6JBO
+  └ Status: Healthy
+  └ Containers: 10 (10 Running, 0 Paused, 0 Stopped)
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 4.051 GiB
+  └ Labels: kernelversion=4.4.17-boot2docker, operatingsystem=Boot2Docker 1.12.1 (TCL 7.2); HEAD : ef7d0b4 - Thu Aug 18 21:18:06 UTC 2016, provider=virtualbox, storagedriver=aufs
+  └ UpdatedAt: 2016-09-07T20:22:46Z
+  └ ServerVersion: 1.12.1
+ dd-node1: 192.168.99.101:12376
+  └ ID: ACRO:NWSB:4GJQ:QBKH:Q3WW:IKN6:VVZ2:2PLR:73JZ:ST5B:MU2M:FE25
+  └ Status: Healthy
+  └ Containers: 2 (2 Running, 0 Paused, 0 Stopped)
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 4.051 GiB
+  └ Labels: kernelversion=4.4.17-boot2docker, operatingsystem=Boot2Docker 1.12.1 (TCL 7.2); HEAD : ef7d0b4 - Thu Aug 18 21:18:06 UTC 2016, provider=virtualbox, storagedriver=aufs
+  └ UpdatedAt: 2016-09-07T20:22:48Z
+  └ ServerVersion: 1.12.1
+Cluster Managers: 1
+ 192.168.99.100: Healthy
+  └ Orca Controller: https://192.168.99.100:443
+  └ Swarm Manager: tcp://192.168.99.100:2377
+  └ KV: etcd://192.168.99.100:12379...
+...
+```
+
+## Install Docker Trusted Registry (DTR)
+
+Login on **NODE 1** and setup your CLI to use the Client Bundle as explained before, and run:
+
+```{r, engine='bash'}
+$ docker-machine ssh dd-node1 "curl -k -s https://$(docker-machine ip dd-controller)/ca > ucp-ca.pem"
+$ docker-machine ssh dd-node1
+$ docker run -ti --rm \
+  docker/dtr install \
+  --ucp-url https://$(docker-machine ip dd-controller) \
+  --dtr-external-url $(docker-machine ip dd-node1) \
+  --ucp-ca "$(cat ucp-ca.pem)"
+```
+
+### Check that DTR is running
+
+In your browser, navigate to the the Docker Universal Control Plane web UI, and navigate to the Applications screen. DTR should be listed as an application.
+
+You can also access the DTR web UI, to make sure it is working. In your browser, navigate to the address were you installed DTR ($(docker-machine ip dd-node1))
+
+![UCP Dashboard]
+(img/dtr_dashboard_1.png)
+
+## Connect DTR and UCP
+
+### Get the UCP CA certificate
+
+Log in with ssh on the UCP controller node and don't connect the CLI to the cluster for the next command.
+
+Get the UCP cluster CA certificate:
+
+```{r, engine='bash'}
+$ docker-machine ssh dd-controller docker run --rm --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp dump-certs --cluster --ca
+```  
+This command prints a certificate block like this:
+
+```
+-----BEGIN CERTIFICATE-----
+MIIFJDCCAwygAwIBAgIIDAApo7wvQCIwDQYJKoZIhvcNAQENBQAwHjEcMBoGA1UE
+AxMTVUNQIENsdXN0ZXIgUm9vdCBDQTAeFw0xNjA2MDEyMTMzMDBaFw0yMTA1MzEy
+...
+xMOixABCUI3jx6k38yAHTO8Q+gyiqj41M/QjrwbyFJD9k69sG6MknguZAMcRwmBs
+3Fjz0e6mRK7qfXsSLGZH/3+iCV5heXz8
+-----END CERTIFICATE-----
+```
+Copy the resulting certificate to the ucp-cluster-ca.pem file, and store it on your local machine. (/vagrant/ucp-bundle-admin/)
+
+### Get the DTR CA certificate
+
+Now, get the root CA certificate used by DTR:
+
+* Log into the DTR web UI (https://192.168.50.11), and navigate to the Settings screen.
+* In the Domain section, click the Show TLS settings link.
+* Copy the content of the TLS CA field.
+* Copy the DTR CA certificate to the dtr-ca.pem file, and store it on your local machine. (/vagrant/ucp-bundle-admin/)
+
+### Integrate UCP with DTR
+
+Configure UCP to know about DTR:
+
+* Log into the UCP web UI, navigate to the Settings page, and click the DTR tab.
+* In the URL field, add the URL of your Docker Trusted Registry (https://192.168.50.11)
+* Don’t set the Insecure option.
+* Upload the dtr-ca.pem file.
+
+    If your Docker Trusted Registry is configured to use a certificate issued by a third-party root CA, you can skip this step, because UCP will trust the CA that issued the certificate.
+
+    If you’ve not configured your DTR installation to use a certificate issued by a third-party root CA, or configured it to use internal or self-signed certificates, you must upload the dtr-ca.pem file.
+
+* Click the Update Registry button to save the changes.
+
+### Configure DTR to trust UCP
+
+In this step, you’ll configure DTR to trust the UCP cluster root CA. This way, requests to DTR that present a certificate issued by the UCP cluster root CA are authorized:
+
+* Log into the DTR web UI, and navigate to the Settings page.
+* In the Auth Bypass TLS Root CA field, paste the content of the ucp-cluster-ca.pem file.
+* Click the Save button to save the changes.
+
+### Configure UCP Docker Engines
+
+For each UCP node, copy the dtr-ca.pem file to /etc/docker/certs.d/$DTR_DOMAIN_NAME/ca.crt.
+
+```{r, engine='bash'}
+$ sudo mkdir -p /etc/docker/certs.d/$(docker-machine ip dd-node1)
+$ sudo cp /vagrant/ucp-bundle-admin/dtr-ca.pem /etc/docker/certs.d/$(docker-machine ip dd-node1)/ca.crt
+```
+
+To finish the link process, restart the docker daemon on all nodes:
+
+```{r, engine='bash'}
+sudo service docker restart
+```
+### Login on our DTR
+
+
+docker login -u admin -p treeptik -e c.vandome@treeptik.fr $(docker-machine ip dd-node1)
