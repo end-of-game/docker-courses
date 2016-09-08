@@ -30,7 +30,7 @@ When asking on "Additional aliases", press enter.
 To finish the setup process, restart the docker daemon:
 
 ```{r, engine='bash'}
-$ docker-machine ssh sudo dd-controller /etc/init.d/docker restart
+$ docker-machine ssh dd-controller sudo /etc/init.d/docker restart
 ```
 
 After the setup process, you can now login to the UCP dashboard at https://$(docker-machine ip dd-controller)
