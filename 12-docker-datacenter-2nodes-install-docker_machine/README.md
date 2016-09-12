@@ -57,7 +57,7 @@ $ docker-machine --native-ssh ssh dd-node1 docker run --rm -it \
 To finish the setup process, restart the docker daemon:
 
 ```{r, engine='bash'}
-$ docker-machine ssh sudo dd-node1 /etc/init.d/docker restart
+$ docker-machine ssh dd-node1 sudo /etc/init.d/docker restart
 ```
 
 The Dashboard page of UCP should list all your controller nodes now:
