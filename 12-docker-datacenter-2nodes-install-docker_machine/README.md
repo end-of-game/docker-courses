@@ -48,7 +48,7 @@ On the next screen upload you Docker Datacenter licence and then you can access 
 Run the second node UCP installer:
 
 ```{r, engine='bash'}
-$ docker-machine ssh dd-node1 docker run --rm -it \
+$ docker-machine --native-ssh ssh dd-node1 docker run --rm -it \
   --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp \
   join -i --host-address $(docker-machine ip dd-node1) \
   --url https://$(docker-machine ip dd-controller) --swarm-port 2377
