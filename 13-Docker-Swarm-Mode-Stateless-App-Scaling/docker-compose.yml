@@ -1,0 +1,18 @@
+version: '2'
+services:
+  front:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  app:
+    image: node
+    volumes:
+      - ./node:/node
+    working_dir: /node
+    command: /bin/bash -c "npm install && node app.js"
+
+  back:
+    image: redis
