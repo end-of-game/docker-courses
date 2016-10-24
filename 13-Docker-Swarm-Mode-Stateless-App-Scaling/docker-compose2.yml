@@ -1,0 +1,12 @@
+version: '2'
+services:
+  front:
+    image: sebastienmusso/front:1.0
+    depends_on:
+      - app
+  app:
+    image: sebastienmusso/app:1.0
+    depends_on:
+      - back 
+  back:
+    image: redis

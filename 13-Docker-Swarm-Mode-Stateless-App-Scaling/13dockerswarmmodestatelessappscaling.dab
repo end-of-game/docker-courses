@@ -1,0 +1,23 @@
+{
+  "Services": {
+    "app": {
+      "Image": "sebastienmusso/app@sha256:b172ce5c7b5428454f1d80f4c1ee93fbe35a9598c937e235ce7592bb91d01be6", 
+      "Networks": [
+        "default"
+      ]
+    }, 
+    "back": {
+      "Image": "redis@sha256:5af2446f774075f2b5bc14738368dc111c357c2a11dd304a90b098e27ff1a50e", 
+      "Networks": [
+        "default"
+      ]
+    }, 
+    "front": {
+      "Image": "sebastienmusso/front@sha256:ca32c9240b962951e71c0e206e1881410fec685f11413892dd26d674022dcf28", 
+      "Networks": [
+        "default"
+      ]
+    }
+  }, 
+  "Version": "0.1"
+}
