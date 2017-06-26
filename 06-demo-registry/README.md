@@ -36,10 +36,6 @@ docker pull localhost:5000/image6
 docker stop registry && docker rm -v registry
 ```
 
-MAC
-* http://192.168.99.100:5000/v2/_catalog
-* http://192.168.99.100:5000/v2/ubuntu/tags/list
-
-LINUX
+Access :
 * http://localhost:5000/v2/_catalog
 * http://localhost:5000/v2/ubuntu/tags/list
