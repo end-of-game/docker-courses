@@ -48,7 +48,7 @@ docker run --name demo1 -it ubuntu bash
 touch /file1.txt
 exit # container is dead
 docker ps -a 
-docker start demo
+docker start demo1
 docker exec -it demo1 ls -la
 docker inspect demo1
 # show the persistance files
