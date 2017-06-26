@@ -22,9 +22,9 @@ docker run --name demo6 -it ubuntu bash
 
 Inside the container
 > touch /demo6.txt
-> exit
 
-Then
+Exit from container and then
+
 ```
 docker commit <containeId> image6
 docker tag image6 localhost:5000/image6
