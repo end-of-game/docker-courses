@@ -83,7 +83,10 @@ Assign the new value of the secret to the service, using source and target to al
 the container as my-secret inside:
 
 ```
-docker service update --secret-add source=my-secret-v2, target=my-secret demo
+docker service update --secret-add source=my-secret-v2,target=my-secret demo
 ```
 
 exec into the running container and demonstrate that the value of the my-secret secret has changed.
+
+
+# Preparing an image for use of secrets
