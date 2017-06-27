@@ -90,3 +90,47 @@ exec into the running container and demonstrate that the value of the my-secret 
 
 
 # Preparing an image for use of secrets
+
+Create a new directory to build the docker images
+```
+import os
+print '***** DOCKER Secrets ******'
+print 'USERNAME: {0}'.format(os.environ['USERNAME'])
+
+fname = os.environ['PASSWORD_FILE']
+with open(fname) as f:
+  content = f.readlines()
+
+print 'PASSWORD_FILE: {0}'.format(fname)
+print 'PASSWORD: {0}'.format(content[0])
+```
+
+With this *Dockerfile* :
+
+```
+FROM python:2.7
+RUN mkdir -p /app
+WORKDIR /app
+COPY . /app
+CMD python ./app.py && sleep 1000
+```
+
+Build it and push it on DockerHub
+
+```
+docker image build -t <username>/secret:1.0 .
+docker image push <username>/secret:1.0
+```
+
+Then create a new service
+
+```
+docker service create \
+    --name secrets-demo \
+    --replicas=1 \
+    --secret source=mysql-password,target=db_password,mode=0400 \
+    -e USERNAME="jdoe" \
+-e PASSWORD_FILE="/run/secrets/db_password" \ <username>/secret:1.0
+```
+
+Todo : use a docker-compose.yml to do same thing :)
