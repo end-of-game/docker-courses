@@ -92,6 +92,8 @@ exec into the running container and demonstrate that the value of the my-secret 
 # Preparing an image for use of secrets
 
 Create a new directory to build the docker images
+Copy the content in *app.py*
+
 ```
 import os
 print '***** DOCKER Secrets ******'
