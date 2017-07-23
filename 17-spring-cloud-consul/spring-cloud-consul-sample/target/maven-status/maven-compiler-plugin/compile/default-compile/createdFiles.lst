@@ -1,0 +1,4 @@
+org/springframework/cloud/consul/sample/DatabaseConfig.class
+org/springframework/cloud/consul/sample/SampleConsulApplication.class
+org/springframework/cloud/consul/sample/MailConfig.class
+META-INF/spring-configuration-metadata.json

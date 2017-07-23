@@ -1,0 +1,16 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "org.springframework.cloud.consul.sample.DatabaseConfig",
+      "name": "",
+      "type": "org.springframework.cloud.consul.sample.DatabaseConfig"
+    },
+    {
+      "sourceType": "org.springframework.cloud.consul.sample.MailConfig",
+      "name": "xxx",
+      "type": "org.springframework.cloud.consul.sample.MailConfig"
+    }
+  ],
+  "properties": []
+}
