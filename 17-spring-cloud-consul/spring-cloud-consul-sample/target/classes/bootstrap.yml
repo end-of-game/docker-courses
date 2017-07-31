@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ConsulDemoTreeptik2
+  cloud:
+    consul:
+      config:
+        enabled: true
+        prefix: configuration
+        defaultContext: apps
+        profileSeparator: '::'

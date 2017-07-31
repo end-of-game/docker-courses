@@ -1,0 +1,11 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "org.springframework.cloud.consul.sample.DatabaseConfig",
+      "name": "",
+      "type": "org.springframework.cloud.consul.sample.DatabaseConfig"
+    }
+  ],
+  "properties": []
+}
