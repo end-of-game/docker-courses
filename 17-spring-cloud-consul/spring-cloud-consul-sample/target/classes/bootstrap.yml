@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ConsulDemoTreeptik2
+    name: ConsulDemoTreeptik
   cloud:
     consul:
       config:

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties
 public class DatabaseConfig {
 
-    @Value("${database.url}")
+    @Value("${database.url:no-url}")
     private String url;
 
     public String getUrl() {

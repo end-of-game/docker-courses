@@ -82,22 +82,34 @@ public class SampleConsulApplication {
         return new DatabaseConfig();
     }
 
-    @Value("${foo}")
+    @Value("${foo:undef}")
     private String foo;
 
-    @Value("${foo.baz}")
+    @Value("${foo.baz:undef}")
     private String foobaz;
 
-    @Value("${question}")
+    @Value("${question:aucune question}")
     private String question;
 
     @RequestMapping("/question")
-    public void question() {
-        System.out.println("foo=" + foo);
-        System.out.println("foobaz=" + foobaz);
-        System.out.println("question(1)=" + question);
-        System.out.println("question=(2)=" + env.getProperty("question"));
-        System.out.println("database.url="+ databaseConfig().getUrl());
+    public String question() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("foo(1)=").append(foo).append("<br/>");
+        builder.append("foo(2)=").append(env.getProperty("foo"));
+        builder.append("<br/>").append("<br/>");
+
+        builder.append("foo.baz(1)=").append(foobaz).append("<br/>");
+        builder.append("foo.baz(2)=").append(env.getProperty("foo.baz"));
+        builder.append("<br/>").append("<br/>");
+
+        builder.append("question(1)=").append(question).append("<br/>");
+        builder.append("question(2)=").append(env.getProperty("question"));
+        builder.append("<br/>").append("<br/>");
+
+        builder.append("database.url=").append(databaseConfig().getUrl()).append("<br/>");
+        builder.append("<br/>").append("<br/>");
+
+        return builder.toString();
     }
 
     @RequestMapping("/instances")
